@@ -15,7 +15,7 @@ services:
       dockerfile: Dockerfile.dev
       context: ./ngnix
     ports:
-      - '3050:8080'
+      - '3050:80'
   api:
     build: 
       dockerfile: Dockerfile.dev
