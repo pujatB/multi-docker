@@ -14,7 +14,7 @@ before_install:
   - docker build -t pujabapat/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true pujabapat/react-test npm test -- --coverage
+  - docker run -e CI=true pujabapat/react-test npm test 
 
 # this is building images using the prod dockerfile for each one, prod versions and push them to docker hub
 after_success:
