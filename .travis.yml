@@ -1,0 +1,45 @@
+# superuser permission is required to have this build
+sudo: required
+
+language: generic
+services:
+  # Telling  we need docker to build
+  - docker  
+
+
+# steps needed to do before test and deploy happens
+before_install:
+  # pujabapat/docker-react - docker username and the github repo name
+  # if one wants to run tests on more containers then add more builds and add more scripts below
+  - docker build -t pujabapat/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true pujabapat/react-test npm test -- --coverage
+
+# this is building images using the prod dockerfile for each one, prod versions and push them to docker hub
+after_success:
+  - docker biuld -t pujabapat/multi-client ./client
+  - docker biuld -t pujabapat/multi-ngnix ./ngnix
+  - docker biuld -t pujabapat/multi-server ./server
+  - docker biuld -t pujabapat/multi-worker ./worker
+  # Log in to the docker CLI , set the docker id and pwd on travis as env variables
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # take all the images and push them to docker hub
+  - docker push pujabapat/multi-client
+  - docker push pujabapat/multi-ngnix
+  - docker push pujabapat/multi-server
+  - docker push pujabapat/multi-worker
+
+
+# deploy:
+#   provider: elasticbeanstalk
+#   region: "us-east-2"
+#   app: "docker-react"
+#   env: "Dockerreact-env"
+#   bucket_name: "elasticbeanstalk-us-east-2-439828442360"
+#   bucket_path: "docker-react"
+#   skip_cleanup: true
+#   on:
+#     branches: main
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY
