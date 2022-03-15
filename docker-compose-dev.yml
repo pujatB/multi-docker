@@ -32,7 +32,7 @@ services:
       - PGHOST=postgres
       - PGDATABASE=postgres
       - PGPASSWORD=postgres_password
-      - PGPORT= 5432
+      - PGPORT=5432
 
   client:
     stdin_open: true
