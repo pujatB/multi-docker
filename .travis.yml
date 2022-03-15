@@ -1,3 +1,8 @@
+
+Bapat, Puja
+11:23 AM (0 minutes ago)
+to me
+
 sudo: required
 language: generic
  
@@ -22,18 +27,59 @@ after_success:
   - docker push pujabapat/multi-nginx
   - docker push pujabapat/multi-server
   - docker push pujabapat/multi-worker
-
+ 
 deploy:
   provider: elasticbeanstalk
   region: 'us-east-1'
   app: 'multi-docker'
-  env: 'Multidocker-env'
+  env: 'MultiDocker-env'
   bucket_name: 'elasticbeanstalk-us-east-1-439828442360'
   bucket_path: 'docker-multi'
   on:
-    branch: master
+    branch: main
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
+ 
+
+
+
+
+# sudo: required
+# language: generic
+ 
+# services:
+#   - docker
+ 
+# before_install:
+#   - docker build -t pujabapat/react-test -f ./client/Dockerfile.dev ./client
+ 
+# script:
+#   - docker run -e CI=true pujabapat/react-test npm test
+ 
+# after_success:
+#   - docker build -t pujabapat/multi-client ./client
+#   - docker build -t pujabapat/multi-nginx ./nginx
+#   - docker build -t pujabapat/multi-server ./server
+#   - docker build -t pujabapat/multi-worker ./worker
+#   # Log in to the docker CLI
+#   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+#   # Take those images and push them to docker hub
+#   - docker push pujabapat/multi-client
+#   - docker push pujabapat/multi-nginx
+#   - docker push pujabapat/multi-server
+#   - docker push pujabapat/multi-worker
+
+# deploy:
+#   provider: elasticbeanstalk
+#   region: 'us-east-1'
+#   app: 'multi-docker'
+#   env: 'Multidocker-env'
+#   bucket_name: 'elasticbeanstalk-us-east-1-439828442360'
+#   bucket_path: 'docker-multi'
+#   on:
+#     branch: master
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY
 
 
 # # superuser permission is required to have this build
